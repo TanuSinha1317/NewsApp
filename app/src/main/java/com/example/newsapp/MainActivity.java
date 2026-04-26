@@ -182,15 +182,18 @@ public class MainActivity extends AppCompatActivity {
 
         newsItems.add(new NewsItem(
                 "Breaking News: Android Java (Update " + cycleNumber + ")",
-                "RecyclerView data refreshed for cycle " + cycleNumber + "."
+                "RecyclerView data refreshed for cycle " + cycleNumber + ".",
+                "https://example.com/images/android-java-" + cycleNumber + ".jpg"
         ));
         newsItems.add(new NewsItem(
                 "Local Update (Update " + cycleNumber + ")",
-                "Tap any news item to open details or save it during refresh cycle " + cycleNumber + "."
+                "Tap any news item to open details or save it during refresh cycle " + cycleNumber + ".",
+                "https://example.com/images/local-update-" + cycleNumber + ".jpg"
         ));
         newsItems.add(new NewsItem(
                 "Tech Story (Update " + cycleNumber + ")",
-                "The list reloads every 10 seconds while the countdown updates above it."
+                "The list reloads every 10 seconds while the countdown updates above it.",
+                "https://example.com/images/tech-story-" + cycleNumber + ".jpg"
         ));
     }
 
