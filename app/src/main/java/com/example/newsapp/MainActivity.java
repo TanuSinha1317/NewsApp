@@ -1,6 +1,10 @@
 package com.example.newsapp;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,12 +25,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView newsRecyclerView = findViewById(R.id.newsRecyclerView);
+        ProgressBar loadingProgressBar = findViewById(R.id.loadingProgressBar);
+
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        newsRecyclerView.setVisibility(View.GONE);
+        loadingProgressBar.setVisibility(View.VISIBLE);
 
-        addSampleNews();
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            addSampleNews();
 
-        NewsAdapter adapter = new NewsAdapter(newsItems, this::showNewsOptionsDialog);
-        newsRecyclerView.setAdapter(adapter);
+            NewsAdapter adapter = new NewsAdapter(newsItems, this::showNewsOptionsDialog);
+            newsRecyclerView.setAdapter(adapter);
+
+            loadingProgressBar.setVisibility(View.GONE);
+            newsRecyclerView.setVisibility(View.VISIBLE);
+        }, 1500);
     }
 
     private void addSampleNews() {
