@@ -1,10 +1,12 @@
 package com.example.newsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +19,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String EXTRA_SKIP_COUNTDOWN = "extra_skip_countdown";
+    private static final int COUNTDOWN_START_SECONDS = 3;
+
     private final List<NewsItem> newsItems = new ArrayList<>();
 
     @Override
@@ -24,22 +29,66 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView countdownTextView = findViewById(R.id.countdownTextView);
         RecyclerView newsRecyclerView = findViewById(R.id.newsRecyclerView);
         ProgressBar loadingProgressBar = findViewById(R.id.loadingProgressBar);
 
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        boolean skipCountdown = getIntent().getBooleanExtra(EXTRA_SKIP_COUNTDOWN, false);
+
+        if (skipCountdown) {
+            showNewsList(newsRecyclerView, loadingProgressBar, countdownTextView);
+        } else {
+            startCountdownThenRefresh(newsRecyclerView, loadingProgressBar, countdownTextView);
+        }
+    }
+
+    private void startCountdownThenRefresh(RecyclerView newsRecyclerView,
+                                           ProgressBar loadingProgressBar,
+                                           TextView countdownTextView) {
         newsRecyclerView.setVisibility(View.GONE);
         loadingProgressBar.setVisibility(View.VISIBLE);
+        countdownTextView.setVisibility(View.VISIBLE);
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            addSampleNews();
+        Handler handler = new Handler(Looper.getMainLooper());
+        final int[] remainingSeconds = {COUNTDOWN_START_SECONDS};
 
-            NewsAdapter adapter = new NewsAdapter(newsItems, this::showNewsOptionsDialog);
-            newsRecyclerView.setAdapter(adapter);
+        Runnable countdownRunnable = new Runnable() {
+            @Override
+            public void run() {
+                countdownTextView.setText(getString(R.string.loading_countdown, remainingSeconds[0]));
 
-            loadingProgressBar.setVisibility(View.GONE);
-            newsRecyclerView.setVisibility(View.VISIBLE);
-        }, 1500);
+                if (remainingSeconds[0] == 0) {
+                    refreshActivity();
+                    return;
+                }
+
+                remainingSeconds[0]--;
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        handler.post(countdownRunnable);
+    }
+
+    private void showNewsList(RecyclerView newsRecyclerView,
+                              ProgressBar loadingProgressBar,
+                              TextView countdownTextView) {
+        addSampleNews();
+
+        NewsAdapter adapter = new NewsAdapter(newsItems, this::showNewsOptionsDialog);
+        newsRecyclerView.setAdapter(adapter);
+
+        loadingProgressBar.setVisibility(View.GONE);
+        countdownTextView.setVisibility(View.GONE);
+        newsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void refreshActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(EXTRA_SKIP_COUNTDOWN, true);
+        startActivity(intent);
+        finish();
     }
 
     private void addSampleNews() {
