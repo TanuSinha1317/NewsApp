@@ -1,3 +1,5 @@
 <resources>
-t    <string name="app_name">News App</string>
+	<string name="app_name">News App</string>
+	<string name="news_detail_default_title">News Title</string>
+	<string name="news_detail_default_description">News description goes here.</string>
 </resources>
