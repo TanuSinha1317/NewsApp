@@ -4,6 +4,12 @@
 	<string name="news_detail_default_description">News description goes here.</string>
 	<string name="loading_countdown">Loading in %1$d...</string>
 	<string name="refreshing_countdown">Refreshing in %1$d...</string>
+	<string name="show_notification_button">Show Notification</string>
+	<string name="notification_channel_name">News Notifications</string>
+	<string name="notification_channel_description">Notifications from the News app</string>
+	<string name="notification_title">News App Notification</string>
+	<string name="notification_message">This notification was triggered from the main screen.</string>
+	<string name="notification_permission_denied">Notification permission denied</string>
 	<string name="action_open">Open</string>
 	<string name="action_save">Save</string>
 	<string name="saved_message">%1$s saved</string>

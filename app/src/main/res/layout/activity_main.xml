@@ -26,6 +26,14 @@
         android:layout_marginBottom="12dp"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/notificationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@string/show_notification_button"
+        android:textAllCaps="false" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsRecyclerView"
         android:layout_width="match_parent"
