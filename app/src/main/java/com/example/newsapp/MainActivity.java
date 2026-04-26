@@ -131,7 +131,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotification() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = NewsDetailsActivity.newIntent(
+                this,
+                getString(R.string.notification_title),
+                getString(R.string.notification_message)
+        );
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
